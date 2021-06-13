@@ -5,7 +5,46 @@
 {% endblock title %}
 
 {% block css %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<style>
+    .registration {
+        width: 420px;
+        margin: 0 auto;
+    }
+    p {
+        text-align: center;
+    }
+    label {
+        width: 50%;
+        text-align: left;
+    }
+    .form-actions {
+        text-align: center;
+    }
+    .btn {
+        width: 100%;
+    }
+
+</style>
 {% endblock css %}
 
 {% block content %}
+<div class="panel panel-default registration">
+    <div class="panel-heading">가입하기</div>
+    <div class="panel-body">
+        <form action="." method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+                {{field.errors}}   <!--필드 상단에 오류 메시지 출력-->
+                <div class="form-group">
+                    <label for="id_{{field.html_name}}">{{field.label}}</label>
+                    {{field}}
+                </div>
+            {% endfor %}
+            <div class="form-actions">
+                <button class="btn btn-primary btn-large" type="submit">가입하기</button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock content %}

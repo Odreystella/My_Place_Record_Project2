@@ -11,6 +11,7 @@ from user.models import User
 class SignupView(CreateView):
     model = get_user_model()             
     form_class = SignupForm     # 커스텀한 SignupForm과 연결하기
+    success_url = '/'           # 가입 완료 후 redirect 해줄 url
     
     # model = User              # 자동생성 폼에서 사용할 모델, User 모델에 정의된 필드들 사용, model이 정의되면 Form 객체 자동 생성
     # form_class = UserCreationForm # auth가 가지고 있는 폼 사용하기, username이 필수라 커스텀 필요
