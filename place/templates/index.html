@@ -2,6 +2,9 @@
 
 {% load static %}
 
+{% block title %}
+{% endblock title %}
+
 {% block css %}
 <link rel="stylesheet" href="{% static 'index.css' %}">
 {% endblock css %}
@@ -10,6 +13,43 @@
 <!-- <h3>MAIN UI</h3> -->
 <div class="main border">
     <h3 class="heading">My Place Record</h3>
-    <a class="signup" href="{% url 'user:signup' %}"><button type="button">회원가입</button></a>
+    <div class="container">
+        <div class="place border flex">
+            <div class="nav border flex">
+                <span class="count"><span class="num">{{posts | length}}</span>spots</span>
+                <ul class="menu">
+                    <li>전체</li>
+                    {% for category in categories %}
+                    <li><a href="">{{category}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="post border">내용
+                <ul>
+                    {% for post in posts %}
+                    <li>
+                        {{post.name}}<br>
+                        {{post.location}}<br>
+                        {{post.stars}}<br>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="user border flex">
+            <div class="profile border flex">
+                <form class="login-form" action="" method="POST">
+                    {% csrf_token %}
+                    <input type="text" placeholder="ID"><br>
+                    <input type="password" placeholder="PASSWORD"><br>
+                    <button class="btn btn-login" type="submit">로그인</button>
+                </form>
+                <div>
+                    <a href="{% url 'user:signup' %}"><button class="btn btn-signup" type="button">회원가입</button></a>
+                </div>
+            </div>
+            <div class="follow border">팔로우</div>
+        </div>
+    </div>
 </div>
 {% endblock content %}

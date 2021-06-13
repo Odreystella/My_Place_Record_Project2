@@ -80,20 +80,23 @@
     margin: 0 40px;
 }
 .login-form { 
-    line-height: 1.6;
+    line-height: 1.8;
+    position: relative;
+    top: 25px;
 }
-/* .btn-login {
-    text-decoration: none;
-    color: black;
-    border: 1px solid grey;
-    width: 183px;
-    text-align: center;
-    border-radius: 2px;
-    padding: 2px 0;
-    background-color: lightblue;
-} */
-/* .btn-login, .signup {
+input {
+    height: 20px;
+}
+.btn {
     width: 185px;
     background-color: lightblue;
-    border: 1px solid grey;
-} */
+    border: none;
+    border-radius: 2px;
+    padding: 8px 0;
+    margin: 3px 0;
+    cursor: pointer;
+}
+.btn-signup{
+    position: relative;
+    top: 25px;
+}

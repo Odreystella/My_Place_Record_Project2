@@ -1,0 +1,13 @@
+body {
+    font-family: 'Gaegu', cursive;
+    font-size: 16px;
+}
+
+.base {
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: 50px;
+}
