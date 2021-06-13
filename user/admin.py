@@ -1,11 +1,11 @@
 from django.contrib import admin
+
 from user.models import User
-# Register your models here.
 
 # admin.site.register(User)
 @admin.register(User)          # admin 페이지에 등록
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'email', 'name', 'created_at', 'last_login_at', 'is_superuser')
+    list_display = ('id', 'email', 'name', 'created_at', 'last_login_at', 'is_superuser', 'is_active')
     list_display_links = ('id', 'email')
     exclude = ('password',)                           # 사용자 상세 정보에서 비밀번호 필드를 노출하지 않음
 
