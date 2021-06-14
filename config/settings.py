@@ -145,4 +145,6 @@ MEDIA_URL = '/media/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
+LOGIN_REDIRECT_URL = '/'  # 로그인 되면 '/'로 이동
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
