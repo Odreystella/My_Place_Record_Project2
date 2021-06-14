@@ -79,24 +79,10 @@
     display: inline-block;
     margin: 0 40px;
 }
-.login-form { 
-    line-height: 1.8;
-    position: relative;
-    top: 25px;
-}
-input {
-    height: 20px;
-}
 .btn {
     width: 185px;
     background-color: lightblue;
     border: none;
     border-radius: 2px;
     padding: 8px 0;
-    margin: 3px 0;
-    cursor: pointer;
-}
-.btn-signup{
-    position: relative;
-    top: 25px;
 }

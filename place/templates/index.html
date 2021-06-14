@@ -19,9 +19,11 @@
                 <span class="count"><span class="num">{{posts | length}}</span>spots</span>
                 <ul class="menu">
                     <li>전체</li>
+                    {% if user.is_authenticated %}
                     {% for category in categories %}
                     <li><a href="">{{category}}</a></li>
                     {% endfor %}
+                    {% endif %}
                 </ul>
             </div>
             <div class="post border">내용
@@ -38,17 +40,26 @@
         </div>
         <div class="user border flex">
             <div class="profile border flex">
-                <form class="login-form" action="" method="POST">
-                    {% csrf_token %}
-                    <input type="text" placeholder="ID"><br>
-                    <input type="password" placeholder="PASSWORD"><br>
-                    <button class="btn btn-login" type="submit">로그인</button>
-                </form>
+                {% if user.is_authenticated %}
+                <span>{{user.name}}님 환영합니다.</span>
+                <a href=""><button class="btn btn-signup" type="button">로그아웃</button></a>
+                {% else %}
+                {% if messages %}
+                {% for message in messages %}
+                {{ message }}
+                {% endfor %}
+                {% endif %}
                 <div>
+                    <a href="{% url 'user:login' %}"><button class="btn btn-login" type="button">로그인</button></a>
                     <a href="{% url 'user:signup' %}"><button class="btn btn-signup" type="button">회원가입</button></a>
                 </div>
+                {% endif %}
             </div>
-            <div class="follow border">팔로우</div>
+            <div class="follow border">팔로우<br>
+                {% if user.is_authenticated %}
+                <a href=""><button class=" btn btn-mypage" type="button">마이페이지</button></a>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
