@@ -58,10 +58,10 @@ AUTH_USER_MODEL = 'user.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware', # auth_login을 통해 생성된 세션 관리, 세션 유효 여부를 판단해서 유효한 경우, request객체의 session이라는 변수에 세션정보 저장
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware', # request.session값을 가지고 어떤 사용자인지 확인, 확인된 사용자는 request.user 객체에 해당 사용자의 모델 인스턴스 저장
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
