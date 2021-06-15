@@ -44,11 +44,6 @@
                 <span>{{user.name}}님 환영합니다.</span>
                 <a href=""><button class="btn btn-signup" type="button">로그아웃</button></a>
                 {% else %}
-                {% if messages %}
-                {% for message in messages %}
-                {{ message }}
-                {% endfor %}
-                {% endif %}
                 <div>
                     <a href="{% url 'user:login' %}"><button class="btn btn-login" type="button">로그인</button></a>
                     <a href="{% url 'user:signup' %}"><button class="btn btn-signup" type="button">회원가입</button></a>
