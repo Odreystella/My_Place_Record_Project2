@@ -5,12 +5,12 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
 from django.views.generic import CreateView
 
-from user.forms import SignupForm
+from user.forms import SignupForm, LoginForm
 from user.models import User
 
 # CreateView로 회원가입뷰 생성하기
 # TemplateView 와 다르게 model, fields 클래스 변수 추가
-class SignupView(CreateView):
+class UserSignupView(CreateView):
     model = get_user_model()             
     form_class = SignupForm     # 커스텀한 SignupForm과 연결하기
     success_url = '/'           # 가입 완료 후 redirect 해줄 url, index로 redirect
@@ -22,7 +22,8 @@ class SignupView(CreateView):
     # template_name = 'user_form.html'
 
 #LoginView로 로그인뷰 생성하기
-class LoginView(LoginView):
+class UserLoginView(LoginView):
+    authentication_form = LoginForm  # form_class = LoginForm보다 나은 방법, LoginForm 내부적으로 authentication_form 다음으로 form_class 확인
     template_name = 'user/login_form.html'
 
     def form_invalid(self, form):
