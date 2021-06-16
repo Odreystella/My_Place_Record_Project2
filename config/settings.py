@@ -148,3 +148,10 @@ MEDIA_URL = '/media/'
 LOGIN_REDIRECT_URL = '/'  # 로그인 되면 '/'로 이동
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 이메일 인증
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'myplacerecord@gmail.com'
+EMAIL_HOST_PASSWORD = 'mpradmin1234!'
+EMAIL_USE_TLS = True
