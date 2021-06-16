@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views import generic
 
-from place.models import Category
+from place.models import Category, Place
 from place.services import PlaceService
 
 
@@ -31,3 +31,10 @@ class CategoryDetailView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         context['posts'] = PlaceService.find_by_post(self.kwargs['pk'])
         return context
+
+
+# 포스트 pk로 해당 포스트 상세내용 보여주는 뷰
+class PostDetailView(generic.DetailView):
+    model = Place
+    context_object_name = 'post'
+    template_name = 'place_detail.html'
