@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
-from django.views import generic
+from django.views import generic, View
 
 from place.models import Category, Place
 from place.services import PlaceService
+from place.dto import CreateDto
 
 
 # class IndexView(TemplateView):
@@ -38,3 +39,37 @@ class PostDetailView(generic.DetailView):
     model = Place
     context_object_name = 'post'
     template_name = 'place_detail.html'
+
+
+# 카테고리 pk로 해당 카테고리에 글 생성하는 뷰
+class PostCreateView(View):
+    def get(self, request, *args, **kwargs):
+        category_pk = self.kwargs['pk']
+        category = PlaceService.find_by_category(category_pk)
+        context = {'category' : category}
+        return render(request, 'place_add.html', context)
+
+    def post(self, request, *args, **kwargs):
+        category_pk = self.kwargs['pk']
+        create_dto = self._build_create_dto(request)
+        result = PlaceService.create(create_dto)
+        context = { 'error' : result['error']}
+        if result['error']['status']:
+            return render(request, 'place_add.html', context)
+        return redirect('place:post', category_pk)
+
+    def _build_create_dto(self, request):
+        category = PlaceService.find_by_category(self.kwargs['pk'])
+        return CreateDto(
+            category=category,
+            author=request.user,
+            name=request.POST['name'],
+            location=request.POST['location'],
+            memo=request.POST['memo'],
+            best_menu=request.POST['best_menu'],
+            additional_info=request.POST['additional_info'],
+            stars=request.POST['stars'],
+            # tag=request.POST['tag'],
+            image=request.FILES.getlist('image'),
+            pk=self.kwargs['pk'],
+        )

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block title %}
+<title>장소 POST 추가</title>
+{% endblock title %}
+
+{% block css %}
+<style>
+    form { width: 300px;}
+    label {margin-right: 10px; line-height: 1.7;}
+    .btn-submit {width: 232px;}
+</style>
+{% endblock css %}
+
+{% block content %}
+{% if error.status %}
+{{error.msg}}
+{% endif %}
+<div class="main border">
+    <h3 class="heading"><a href="{% url 'index' %}">My Place Record</a></h3>
+    <h3>- 장소 POST 추가 폼 -</h3>
+    <div class="container">
+        <form action="{% url 'place:add' category.pk%}" method="POST" enctype="multipart/form-data"> <!--이미지 post할 때 추가하는 속성-->
+            {% csrf_token %}
+            <label for="name">장소</label>
+            <input type="text" id="name" name="name">
+            <br>
+            <label for="location">위치</label>
+            <input type="text" id="location" name="location">
+            <br>
+            <label for="memo">메모</label>
+            <input type="text" id="memo" name="memo">
+            <br>
+            <label for="best_menu">메뉴</label>
+            <input type="text" id="best_menu" name="best_menu">
+            <br>
+            <label for="additional_info">정보</label>
+            <select id="additional_info" name="additional_info">
+                <option value="default" selected>추가정보를 선택하세요</option>
+                <option value="주차장 있음">주차장 있음</option>
+                <option value="매일 영업">매일 영업</option>
+                <option value="반려동물 허용">반려동물 허용</option>
+                <option value="공휴일 휴무">공휴일 휴무</option>
+            </select>
+            <br>
+            <label for="stars">별점</label>
+            <select id="stars" name="stars">
+                <option value="default" selected>별점을 선택하세요</option>
+                <option value="5">5</option>
+                <option value="4">4</option>
+                <option value="3">3</option>
+                <option value="2">2</option>
+                <option value="1">1</option>
+            </select>
+            <br>
+            <!-- <label for="tag">태그</label>
+            <input type="text" id="tag" name="tag">
+            <br> -->
+            <label for="image">사진</label>
+            <input type="file" id="image" name="image" multiple>
+            <br><br>
+            <button class="btn-submit" type="submit">등록</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

@@ -30,7 +30,7 @@
                 <ul class="menu">
                     <li>{{category.name}}</a></li>
                 </ul>
-                <a href="" class="btn-add">{{category.name}}추가</a>
+                <a href="{% url 'place:add' category.pk %}" class="btn-add">{{category.name}}추가</a>
             </div>
             <div class="post border">내용
                 <ul>
