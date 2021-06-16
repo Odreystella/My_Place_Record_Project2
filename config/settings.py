@@ -147,6 +147,8 @@ MEDIA_URL = '/media/'
 
 LOGIN_REDIRECT_URL = '/'  # 로그인 되면 '/'로 이동
 
+LOGOUT_REDIRECT_URL = '/' # 로그아웃 되면 '/' 로 이동
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # 이메일 인증
