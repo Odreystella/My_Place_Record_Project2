@@ -1,7 +1,7 @@
 from utils import build_error_msg, build_success_msg
 
 from place.models import Place, Category, Photo
-from place.dto import CreateDto
+from place.dto import CreateDto, UpdateDto
 
 class PlaceService():
     @staticmethod
@@ -15,6 +15,10 @@ class PlaceService():
     @staticmethod
     def find_by_category(category_pk):
         return Category.objects.filter(pk=category_pk).first()
+
+    @staticmethod
+    def get_post(post_pk):
+        return Place.objects.filter(pk=post_pk).first()
 
     @staticmethod
     def create(dto:CreateDto):
@@ -43,3 +47,31 @@ class PlaceService():
 
         # place.tags.add(dto.tag)
         return build_success_msg('')
+
+    @staticmethod
+    def update(dto:UpdateDto):
+        if not dto.name or not dto.location or not dto.stars or not dto.memo or not dto.best_menu or not dto.additional_info:
+            return build_error_msg('MISSING_INPUT')
+
+        place = Place.objects.filter(pk=dto.pk).update(
+            name=dto.name,
+            location=dto.location,
+            stars=dto.stars,
+            memo=dto.memo,
+            best_menu=dto.best_menu,
+            additional_info=dto.additional_info,
+        )
+        if dto.image:
+            photo = Photo.objects.filter(place__pk=dto.pk)
+        
+            if photo:
+                photo.delete()
+                                
+            place = Place.objects.filter(pk=dto.pk).first()
+            for image in dto.image:
+                # print(image)
+                Photo.objects.filter(place__pk=dto.pk).create(
+                    place=place,
+                    image=image
+                )                
+            return build_success_msg('') 

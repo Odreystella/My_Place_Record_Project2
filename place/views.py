@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views import generic, View
+from django.contrib import messages
 
 from place.models import Category, Place
 from place.services import PlaceService
-from place.dto import CreateDto
+from place.dto import CreateDto, UpdateDto
 
 
 # class IndexView(TemplateView):
@@ -72,4 +73,44 @@ class PostCreateView(View):
             # tag=request.POST['tag'],
             image=request.FILES.getlist('image'),
             pk=self.kwargs['pk'],
+        )
+
+
+# 포스트 pk로 해당 포스트 수정하는 뷰
+class PostUpdateView(View):
+    success_message = '게시글이 수정되었습니다.'
+
+    def get(self, request, *args, **kwargs):
+        post_pk = self.kwargs['pk']
+        post = PlaceService.get_post(post_pk)
+        context = {'post' : post}
+        return render(request, 'place_edit.html', context)
+
+    def post(self, request, *args, **kwargs):
+        post_pk = self.kwargs['pk']
+        post = PlaceService.get_post(post_pk)
+
+        update_dto = self._build_update_dto(request)
+        result = PlaceService.update(update_dto)
+
+        if len(messages.get_messages(request)) == 0:
+            messages.success(self.request, self.success_message)
+        # messages.error(self.request, '알 수 없는 요청입니다.')
+
+        print(result)
+        context = {'post' : post, 'error' : result['error']}
+        if result['error']['status']:
+            return render(request, 'place_edit.html', context)
+        return redirect('place:detail', post_pk)
+
+    def _build_update_dto(self, request):
+        return UpdateDto(
+            name=request.POST['name'],
+            location=request.POST['location'],
+            stars=request.POST['stars'],
+            memo=request.POST['memo'],
+            best_menu=request.POST['best_menu'],
+            additional_info=request.POST['additional_info'],
+            image=request.FILES.getlist('image'),
+            pk=self.kwargs['pk']
         )

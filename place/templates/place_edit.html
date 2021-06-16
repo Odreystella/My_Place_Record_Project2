@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block title %}
+<title>장소 POST 수정</title>
+{% endblock title %}
+
+{% block css %}
+<style>
+    input {width: 300px;}
+    ul {padding: 0;}
+</style>
+<!-- <link rel="stylesheet" href="{% static 'index.css' %}"> -->
+{% endblock css %}
+
+{% block content %}
+{% if error.status %}
+{{error.msg}}
+{% endif %}
+<div class="main border">
+    <h3 class="heading"><a href="{% url 'index' %}">My Place Record</a></h3>
+    <h3>- 장소 POST 수정 페이지 -</h3>
+    <div class="container">
+        <form action="{% url 'place:edit' post.pk %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <ul>
+                <li><input type="text" value="{{post.name}}" name="name"></li>
+                <li><input type="text" value="{{post.location}}" name="location"></li>
+                <li><select id="stars" name="stars" >
+                    <option value="{{post.stars}}" selected>{{post.stars}}</option>
+                    <option value="5">5</option>
+                    <option value="4">4</option>
+                    <option value="3">3</option>
+                    <option value="2">2</option>
+                    <option value="1">1</option>
+                </select></li>
+                <li>
+                    메모<br>
+                    <textarea cols="36" rows="5" name="memo">{{post.memo}}</textarea>
+                </li>
+                <li>
+                    베스트 메뉴<br>
+                    <input type="text" value="{{post.best_menu}}" name="best_menu">
+                </li>
+                <li>
+                    추가정보<br>
+                    <select id="additional_info" name="additional_info">
+                        <option value="{{post.additional_info}}" selected>{{post.additional_info}}</option>
+                        <option value="주차장 있음">주차장 있음</option>
+                        <option value="매일 영업">매일 영업</option>
+                        <option value="반려동물 허용">반려동물 허용</option>
+                        <option value="공휴일 휴무">공휴일 휴무</option>
+                    </select>
+                </li>
+                <li>
+                    사진<br>
+                    {% for photo in post.photo.all %}
+                    <input type="file" id="image" multiple>{{photo.image.url}}<br>
+                    {% endfor %}
+                </li>
+            </ul>
+            <button type="submit">완료</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}
