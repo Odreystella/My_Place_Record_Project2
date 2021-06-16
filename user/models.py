@@ -33,10 +33,10 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 class User(AbstractBaseUser, PermissionsMixin, BaseField):
-    email = models.EmailField('email', unique=True)
+    email = models.EmailField('email', unique=True, blank=False)
     name = models.CharField('이름', max_length=30, blank=True)
     selfie = models.ImageField('이미지', upload_to='images/', default='default.png', blank=True, null=True)
-    is_active = models.BooleanField('사용중', default=True)    # 이메일 인증을 위한 필드
+    is_active = models.BooleanField('사용중', default=False)    # 이메일 인증을 위한 필드
     is_staff = models.BooleanField('스태프 권한', default=False)
 
     objects = UserManager()
