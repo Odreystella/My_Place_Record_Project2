@@ -63,6 +63,7 @@ class UserSignupView(CreateView):
     # - 7. 인증 메일 url을 클릭하여 인증하기, url에 user.pk와 token으로 check_token함
     # - 8-1. 정상적인 사용자의 경우 is_active를 True로 바꿔주고 인증에 성공했다는 메시지 띄우고 login페이지로 redirect
     # - 8-2. 비정상적인 사용자의 경우 인증에 실패했다는 메시지 띄우고, login페이지로 redirect
+    # - 9. 인증되지 않은 사용자의 경우 인증 이메일 재발송이 가능한 링크 제공  <- 추가 예정
 
 # 사용자 인증뷰 : url의 사용자pk와 토큰을 가지고 해당 사용자의 정상적인 토큰인지 확인되면 인증 여부를 알려줌
 class UserVerificationView(TemplateView):
