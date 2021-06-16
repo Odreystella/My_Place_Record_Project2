@@ -2,9 +2,6 @@
 
 {% load static %}
 
-{% block title %}
-{% endblock title %}
-
 {% block css %}
 <link rel="stylesheet" href="{% static 'index.css' %}">
 {% endblock css %}
@@ -21,7 +18,7 @@
                     <li>전체</li>
                     {% if user.is_authenticated %}
                     {% for category in categories %}
-                    <li><a href="">{{category}}</a></li>
+                    <li><a href="{% url 'place:post' category.pk %}">{{category}}</a></li>
                     {% endfor %}
                     {% endif %}
                 </ul>
