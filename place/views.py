@@ -114,3 +114,18 @@ class PostUpdateView(View):
             image=request.FILES.getlist('image'),
             pk=self.kwargs['pk']
         )
+
+# 사진 개별 수정하는 뷰 - 미완성
+# class PhotoUpdateView(View):
+#     success_message = '사진이 수정되었습니다.'
+
+#     def get(self, request, *args, **kwargs):
+#         photo = PlaceService.get_photo(self.kwargs['pk'])
+#         post = PlaceService.get_post(pthoto_pk)
+#         context = {'post' : post}
+#         return render(request, 'place_edit.html', context)
+
+
+#     def post(self, request, *args, **kwargs):
+#         photo_pk = self.kwargs['pk']
+#         pass

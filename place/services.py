@@ -21,6 +21,10 @@ class PlaceService():
         return Place.objects.filter(pk=post_pk).first()
 
     @staticmethod
+    def get_photo(photo_pk):
+        return Photo.objects.filter(pk=photo_pk).first()
+    
+    @staticmethod
     def create(dto:CreateDto):
         if not dto.name or not dto.location or not dto.memo or not dto.best_menu or not dto.additional_info or not dto.stars:
             return build_error_msg('MISSING_INPUT')

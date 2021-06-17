@@ -52,12 +52,12 @@
             </li><br>
             <li>
                 <span class="photo font">사진</span><br>
-                    {% for photo in post.photo.all %}
-                    <div>
-                        <img src="{{photo.image.url}}" width="150" height="150" alt="">
-                        <a href=""><button type="button ">사진 수정</button></a>
-                    </div>
-                    {% endfor %}
+                {% for photo in post.photo.all %}
+                <div>
+                    <img src="{{photo.image.url}}" width="150" height="150" alt="">
+                    <a href="#"><button type="button ">사진 수정</button></a>
+                </div>
+                {% endfor %}
             </li>
         </ul>
     </div>
