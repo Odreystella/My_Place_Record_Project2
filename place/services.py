@@ -10,7 +10,13 @@ class PlaceService():
 
     @staticmethod
     def find_by_post(category_pk):
-        return Place.objects.filter(category__pk=category_pk)
+        places = Place.objects.filter(category__pk=category_pk)
+        posts = []
+        for place in places:
+            if place.is_deleted == False:
+                posts.append(place)
+
+        return posts
 
     @staticmethod
     def find_by_category(category_pk):
@@ -79,3 +85,14 @@ class PlaceService():
                     image=image
                 )                
             return build_success_msg('') 
+
+    @staticmethod
+    def delete(post_pk):
+        post = Place.objects.filter(pk=post_pk).first()
+        
+        # post.is_deleted = True
+        Place.objects.filter(pk=post_pk).update(
+            is_deleted=True
+        )
+        return build_success_msg('')
+

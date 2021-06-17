@@ -129,3 +129,12 @@ class PostUpdateView(View):
 #     def post(self, request, *args, **kwargs):
 #         photo_pk = self.kwargs['pk']
 #         pass
+
+class PostDeleteView(View):
+    def get(self, request, *args, **kwargs):
+        post_pk = self.kwargs['pk']
+        PlaceService.delete(post_pk)
+
+        post = PlaceService.get_post(post_pk)
+        category_pk = post.category.pk
+        return redirect('place:post', category_pk)
