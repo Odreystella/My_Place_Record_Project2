@@ -55,7 +55,7 @@
                 <li>
                     사진<br>
                     {% for photo in post.photo.all %}
-                    <input type="file" id="image" multiple>{{photo.image.url}}<br>
+                    <input type="file" id="image" name="image" multiple>{{photo.image.url}}<br>
                     {% endfor %}
                 </li>
             </ul>
