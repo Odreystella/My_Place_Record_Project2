@@ -17,6 +17,14 @@
    .nav, .post {
        width: 55vw;
    }
+   a {
+       text-decoration: none;
+       color: black;
+   }
+   .post > ul > li {
+       width: 600px;
+   }
+   
 </style>
 {% endblock css %}
 
@@ -32,13 +40,13 @@
                 </ul>
                 <a href="{% url 'place:add' category.pk %}" class="btn-add">{{category.name}}추가</a>
             </div>
-            <div class="post border">내용
+            <div class="post border">
                 <ul>
                     {% for post in posts %}
                     <li><a href="{% url 'place:detail' post.pk %}">
-                        {{post.name}}<br>
-                        {{post.location}}<br>
-                        {{post.stars}}
+                        <span class="name">{{post.name}}</span><br>
+                        <span class="location">{{post.location}}</span><br>
+                        <span class="stars">{{post.stars}}</span>
                     </li></a>
                     {% endfor %}
                 </ul>

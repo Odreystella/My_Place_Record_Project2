@@ -23,13 +23,13 @@
                     {% endif %}
                 </ul>
             </div>
-            <div class="post border">내용
+            <div class="post border">
                 <ul>
                     {% for post in posts %}
                     <li>
-                        {{post.name}}<br>
-                        {{post.location}}<br>
-                        {{post.stars}}<br>
+                        <span class="name">{{post.name}}</span><br>
+                        <span class="location">{{post.location}}</span><br>
+                        <span class="stars">{{post.stars}}</span><br>
                     </li>
                     {% endfor %}
                 </ul>
@@ -47,7 +47,7 @@
                 </div>
                 {% endif %}
             </div>
-            <div class="follow border">팔로우<br>
+            <div class="follow border flex">
                 {% if user.is_authenticated %}
                 <a href=""><button class=" btn btn-mypage" type="button">마이페이지</button></a>
                 {% endif %}

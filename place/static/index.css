@@ -26,13 +26,13 @@
 .place {
     width: 48vw; 
     height: 65vh; 
-    background-color: yellow; 
+    /* background-color: yellow;  */
     padding: 10px 0;
 }
 .user {
     width: 30vw; 
     height: 65vh; 
-    background-color: blue;
+    /* background-color: blue; */
     padding: 10px 0
 }
 .border {
@@ -51,6 +51,20 @@
     background-color: #fff;
     overflow: hidden;
 }
+.post > ul {
+    list-style: none;
+}
+.post > ul > li {
+    position: relative;
+    width: 480px;
+    height: 55px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    background-color: yellow;
+    margin-bottom: 5px;
+    text-align: center;
+    padding-top: 3px;
+}
 .flex { 
     display: flex; 
     flex-direction: column; 
@@ -68,6 +82,7 @@
     width: 28vw; 
     height: 20vh;  
     background-color: #fff;
+    justify-content: center; 
 }
 .menu {
     padding: 0;
@@ -78,6 +93,20 @@
 .menu > li{
     display: inline-block;
     margin: 0 40px;
+}
+.menu > li> a {
+    background-color:lightblue;
+    color: white;
+    text-decoration: none;
+}
+.name {
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+.stars {
+    position: absolute;
+    top: 20px;
+    right:100px;
 }
 .btn {
     width: 185px;
