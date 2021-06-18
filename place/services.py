@@ -84,7 +84,7 @@ class PlaceService():
                     place=place,
                     image=image
                 )                
-            return build_success_msg('') 
+        return build_success_msg('') 
 
     @staticmethod
     def delete(post_pk):
