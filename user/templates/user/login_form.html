@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>로그인</title>
+{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<style>
+    .registration {
+        width: 500px;
+        margin: 0 auto;
+        position: relative;
+    }
+    label {
+        width: 50%;
+        text-align: left;
+    }
+    input {
+        text-align: center;
+    }
+    .selfie {
+        position: absolute;
+        top: 140px;
+        left: 253px;
+        right: 0;
+    }
+    .form-actions {
+        text-align: center;
+        position: relative;
+        margin-left: -40px;
+    }
+    .btn {
+        width: 84%;
+    }
+
+</style>
+{% endblock css %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+{% endif %}
+<div class="panel panel-default registration">
+    <div class="panel-heading">로그인하기</div>
+    <div class="panel-body">
+        <form action="." method="POST">
+        <!-- <form action="/user/login?next=/" method="POST"> 로그인 되면 '/'로 redirect-->
+            {% csrf_token %}
+            {% for field in form %}
+            {{field.errors}}   <!--필드 상단에 오류 메시지 출력-->
+            <div class="form-group">
+                <label for="field.id_for_label}}">{{field.label}}</label>
+                <input id="{{field.id_for_label}}" type="{{field.field.widget.input_type}}" name="{{field.html_name}}">
+            </div>
+            {% endfor %}
+            <div class="form-actions">
+                <button class="btn btn-primary btn-large" type="submit">로그인</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

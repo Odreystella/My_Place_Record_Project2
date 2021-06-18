@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'index.css' %}">
+{% endblock css %}
+
+{% block content %}
+<!-- <h3>MAIN UI</h3> -->
+<div class="main border">
+    <h3 class="heading">My Place Record</h3>
+    <div class="container">
+        <div class="place border flex">
+            <div class="nav border flex">
+                <span class="count"><span class="num">{{posts | length}}</span>spots</span>
+                <ul class="menu">
+                    <li>전체</li>
+                    {% if user.is_authenticated %}
+                    {% for category in categories %}
+                    <li><a href="{% url 'place:post' category.pk %}">{{category}}</a></li>
+                    {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="post border">
+                <ul>
+                    {% for post in posts %}
+                    <li>
+                        <span class="name">{{post.name}}</span><br>
+                        <span class="location">{{post.location}}</span><br>
+                        <span class="stars">{{post.stars}}</span><br>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="user border flex">
+            <div class="profile border flex">
+                {% if user.is_authenticated %}
+                <span>{{user.name}}님 환영합니다.</span>
+                <a href="{% url 'user:logout' %}"><button class="btn btn-signup" type="button">로그아웃</button></a>
+                {% else %}
+                <div>
+                    <a href="{% url 'user:login' %}"><button class="btn btn-login" type="button">로그인</button></a>
+                    <a href="{% url 'user:signup' %}"><button class="btn btn-signup" type="button">회원가입</button></a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="follow border flex">
+                {% if user.is_authenticated %}
+                <a href=""><button class=" btn btn-mypage" type="button">마이페이지</button></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

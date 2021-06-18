@@ -1,0 +1,117 @@
+.main {
+    width: 85vw; 
+    height: 80vh; 
+    background-color: lightgrey; 
+    display: flex; 
+    justify-content: center; 
+    opacity: 0.5; 
+    position: relative;
+}
+.heading {
+    color: white; 
+    font-weight: bold; 
+    font-size: 1.5rem; 
+    position: absolute; 
+    left: 20px;
+    margin: 10px 0;
+}
+.container {
+    display: flex;  
+    width: 90vw; 
+    height: 85vh; 
+    padding: 0 25px; 
+    justify-content: space-between; 
+    align-items: center;
+}
+.place {
+    width: 48vw; 
+    height: 65vh; 
+    /* background-color: yellow;  */
+    padding: 10px 0;
+}
+.user {
+    width: 30vw; 
+    height: 65vh; 
+    /* background-color: blue; */
+    padding: 10px 0
+}
+.border {
+    border: 1px solid lightgrey; 
+    border-radius: 13px;
+    box-shadow: 3px 3px 10px lightgrey;
+}
+.nav { 
+    width: 45vw; 
+    height: 20vh; 
+    background-color: #fff;
+}
+.post { 
+    width: 45vw; 
+    height: 44vh;  
+    background-color: #fff;
+    overflow: hidden;
+}
+.post > ul {
+    list-style: none;
+}
+.post > ul > li {
+    position: relative;
+    width: 480px;
+    height: 55px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    background-color: yellow;
+    margin-bottom: 5px;
+    text-align: center;
+    padding-top: 3px;
+}
+.flex { 
+    display: flex; 
+    flex-direction: column; 
+    flex-wrap: wrap; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+.profile {
+    width: 28vw; 
+    height: 40vh;  
+    background-color: #fff;
+    justify-content: center; 
+}
+.follow {
+    width: 28vw; 
+    height: 20vh;  
+    background-color: #fff;
+    justify-content: center; 
+}
+.menu {
+    padding: 0;
+}
+.num { 
+    font-size: 3.5rem;
+}
+.menu > li{
+    display: inline-block;
+    margin: 0 40px;
+}
+.menu > li> a {
+    background-color:lightblue;
+    color: white;
+    text-decoration: none;
+}
+.name {
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+.stars {
+    position: absolute;
+    top: 20px;
+    right:100px;
+}
+.btn {
+    width: 185px;
+    background-color: lightblue;
+    border: none;
+    border-radius: 2px;
+    padding: 8px 0;
+}
