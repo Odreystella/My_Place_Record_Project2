@@ -71,42 +71,16 @@ class UserVerificationView(TemplateView):
     redirect_url = '/user/login/'
     token_generator = default_token_generator  # 토큰의 유효성 확인
 
-    # 데이터 처리 부분은 services에서 하려고 코드 분리하는데 pk TypeError..
-    # def get(self, request, *args, **kwargs):
-    #     # if self.is_valid_token(**kwargs):
-    #     valid_dto = self._build_valid_token_dto(kwargs)
-    #     print(valid_dto)
-    #     result = UserVerificationService.is_valid_token(self, valid_dto)
-    #     print(result)
-    #     if result:
-    #         messages.info(request, '인증이 완료되었습니다.')
-    #     else:
-    #         messages.error(request, '인증이 실패하였습니다.')
-    #     return HttpResponseRedirect(self.redirect_url)   # 인증 성공 여부와 상관없이 무조건 로그인 페이지로 redirect
-
-    # def _build_valid_token_dto(self, k):
-    #     # print(k)
-    #     return ValidTokenDto(
-    #         pk = k['pk'],
-    #         token = k['token'],
-    #     )
-
+    # 데이터 처리 부분은 services에서 하려고 코드 분리
     def get(self, request, *args, **kwargs):
-        if self.is_vaild_token(**kwargs):
+        result = UserVerificationService.is_valid_token(self, **kwargs)
+        print(result)
+        if result:
             messages.info(request, '인증이 완료되었습니다.')
         else:
             messages.error(request, '인증이 실패하였습니다.')
-        return HttpResponseRedirect(self.redirect_url)   # 인증 성공여부와 상관없이 무조건 로그인 페이지로 이동
+        return HttpResponseRedirect(self.redirect_url)   # 인증 성공 여부와 상관없이 무조건 로그인 페이지로 redirect
 
-    def is_vaild_token(self, **kwargs):
-        pk = kwargs.get('pk')
-        token = kwargs.get('token')
-        user = self.model.objects.get(pk=pk)
-        is_valid = self.token_generator.check_token(user, token)
-        if is_valid:
-            user.is_active = True
-            user.save()
-        return is_valid
 
 #LoginView로 로그인뷰 생성하기
 class UserLoginView(LoginView):

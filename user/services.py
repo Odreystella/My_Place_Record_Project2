@@ -6,9 +6,9 @@ from user.models import User
 class UserVerificationService:
     token_generator = default_token_generator
     
-    def is_valid_token(self, dto:ValidTokenDto):
-        user = User.objects.filter(pk=dto.pk).first()
-        is_valid = self.token_generator.check_token(user, dto.token)
+    def is_valid_token(self, **kwargs):
+        user = User.objects.filter(pk=kwargs['pk']).first()
+        is_valid = self.token_generator.check_token(user, kwargs['token'])
 
         if is_valid:               
             # 유효한 토큰인 경우만 is_active를 바꿔줌
