@@ -95,7 +95,7 @@
     margin: 0 40px;
 }
 .menu > li> a {
-    background-color:lightblue;
+    background-color:skyblue;
     color: white;
     text-decoration: none;
 }
@@ -110,7 +110,7 @@
 }
 .btn {
     width: 185px;
-    background-color: lightblue;
+    background-color: skyblue;
     border: none;
     border-radius: 2px;
     padding: 8px 0;
