@@ -1,4 +1,3 @@
-from user.dto import ValidTokenDto
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -7,12 +6,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.tokens import default_token_generator
 from django.views.generic import CreateView, TemplateView
+from django.views import View
 
 from config import settings
 from user.forms import UserSignupForm, UserLoginForm
-from user.models import User
-from user.dto import ValidTokenDto
-from user.services import UserVerificationService
+from user.services import UserVerificationService, UserService
 
 # CreateView로 회원가입뷰 생성하기
 # TemplateView 와 다르게 model, fields 클래스 변수 추가
@@ -82,7 +80,7 @@ class UserVerificationView(TemplateView):
         return HttpResponseRedirect(self.redirect_url)   # 인증 성공 여부와 상관없이 무조건 로그인 페이지로 redirect
 
 
-#LoginView로 로그인뷰 생성하기
+# LoginView로 로그인뷰 생성하기
 class UserLoginView(LoginView):
     authentication_form = UserLoginForm  # form_class = LoginForm보다 나은 방법, LoginForm 내부적으로 authentication_form 다음으로 form_class 확인
     template_name = 'user/login_form.html'
@@ -90,3 +88,15 @@ class UserLoginView(LoginView):
     def form_invalid(self, form):
         messages.error(self.request, '로그인에 실패하였습니다.' )
         return super().form_invalid(form)
+
+
+# 마이페이지 뷰 생성하기
+class MypageView(View):
+    def get(self, request, *args, **kwargs):
+        user_pk = self.kwargs['pk']
+        user = UserService.find_by_user_pk(user_pk)
+        context = {'user' : user}
+        return render(request, 'user/mypage.html', context)
+
+    def post(self, request, *args, **kwargs):
+        pass

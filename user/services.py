@@ -17,3 +17,8 @@ class UserVerificationService:
             user.is_active = True
             user.save()
         return is_valid
+
+class UserService:
+    @staticmethod
+    def find_by_user_pk(user_pk):
+        return User.objects.filter(pk=user_pk).first()

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block title %}
+<title>My Page</title>
+{% endblock title %}
+
+{% block css %}
+<style>
+    ul {padding: 0; list-style: none;}
+    .container {width: 400px; position: relative; justify-content: center;}
+    .heading-detail {display: inline-block;}
+    a { text-decoration: none; color: black;}
+    .name {font-size: 2rem; text-align: center; font-weight: 700;}
+    .btn {position: relative; right: -70px;}
+    .font {font-weight: 600;}
+    .selfie::before { content: ''; border: 0.1px solid grey; display: block; margin-bottom: 10px;}
+    .follow, .following {color: white; background-color: skyblue}
+    .btn-following {position: relative; left: 10px; top: -4px;}
+</style>
+<!-- <link rel="stylesheet" href="{% static 'index.css' %}"> -->
+{% endblock css %}
+
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+<div >
+    {{message}}
+</div>
+{% endfor %}
+{% endif %}
+<div class="main border">
+    <h3 class="heading"><a href="{% url 'index' %}">My Place Record</a></h3>
+    <h3 class='heading-detail'>- 마이페이지 -</h3>
+    <a href=""><button class="btn" type="button ">수정</button></a>
+    <a href=""><button class="btn" type="button" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button></a>
+    <div class="container">
+        <ul>
+            <li>
+                <span class="name">{{user.name}}</span>
+                <a href="#"><button class="btn btn-following" type="button ">following</button></a>
+            </li>
+            <li>
+                <img class="selfie" src="{{user.selfie.url}}" width="150" height="150" alt="">
+            </li><br>
+            <li>
+                <a href="#"><span class="follow font">팔로워 보러가기 -- > </span></a><br>
+            </li><br>
+            <li>
+                <a href="#"><span class="following font">팔로잉 보러가기 --> </span></a><br>
+            </li><br>
+        </ul>
+    </div>
+</div>
+{% endblock content %}
