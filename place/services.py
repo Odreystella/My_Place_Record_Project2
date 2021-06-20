@@ -6,7 +6,7 @@ from place.dto import CreateDto, UpdateDto
 class PlaceService():
     @staticmethod
     def get_all_posts():
-        return Place.objects.all()
+        return Place.objects.all().order_by('-created_at')[:5]
 
     @staticmethod
     def find_by_post(category_pk):

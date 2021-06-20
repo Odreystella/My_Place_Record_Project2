@@ -50,9 +50,14 @@
     height: 44vh;  
     background-color: #fff;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .post > ul {
     list-style: none;
+    margin: 0;
+    padding: 0;
 }
 .post > ul > li {
     position: relative;
