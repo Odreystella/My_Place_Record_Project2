@@ -18,6 +18,7 @@ class UserVerificationService:
             user.save()
         return is_valid
 
+
 class UserService:
     @staticmethod
     def find_by_user_pk(user_pk):
