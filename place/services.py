@@ -10,13 +10,12 @@ class PlaceService():
 
     @staticmethod
     def find_by_post(category_pk):
-        places = Place.objects.filter(category__pk=category_pk)
+        places = Place.objects.filter(category__pk=category_pk).order_by('-created_at')
         posts = []
         for place in places:
             if place.is_deleted == False:
                 posts.append(place)
-
-        return posts
+        return posts[:5]
 
     @staticmethod
     def find_by_category(category_pk):
