@@ -6,17 +6,16 @@ from place.dto import CreateDto, UpdateDto
 class PlaceService():
     @staticmethod
     def get_all_posts():
-        return Place.objects.all()
+        return Place.objects.all().order_by('-created_at')[:5]
 
     @staticmethod
     def find_by_post(category_pk):
-        places = Place.objects.filter(category__pk=category_pk)
+        places = Place.objects.filter(category__pk=category_pk).order_by('-created_at')
         posts = []
         for place in places:
             if place.is_deleted == False:
                 posts.append(place)
-
-        return posts
+        return posts[:5]
 
     @staticmethod
     def find_by_category(category_pk):

@@ -50,9 +50,14 @@
     height: 44vh;  
     background-color: #fff;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .post > ul {
     list-style: none;
+    margin: 0;
+    padding: 0;
 }
 .post > ul > li {
     position: relative;
@@ -95,7 +100,7 @@
     margin: 0 40px;
 }
 .menu > li> a {
-    background-color:lightblue;
+    background-color:skyblue;
     color: white;
     text-decoration: none;
 }
@@ -110,7 +115,7 @@
 }
 .btn {
     width: 185px;
-    background-color: lightblue;
+    background-color: skyblue;
     border: none;
     border-radius: 2px;
     padding: 8px 0;

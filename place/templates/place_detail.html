@@ -12,7 +12,7 @@
     .heading-detail {display: inline-block;}
     .name {font-size: 2rem; text-align: center; font-weight: 700;}
     .btn {position: relative; right: -70px;}
-    .stars {position: absolute; top: 15px; right: 295px;}
+    .stars {position: absolute; top: 7px; right: 225px;}
     .font {font-weight: 600;}
     .stars::after { content: ''; border: 0.1px solid grey; display: block;}
     .memo::before { content: ''; border: 0.1px solid grey; display: block; margin-bottom: 10px;}
@@ -35,7 +35,7 @@
     <a href="{% url 'place:delete' post.pk %}"><button class="btn" type="button" onclick="return confirm('정말 삭제하시겠습니까?')">글삭제</button></a>
     <div class="container">
         <ul>
-            <li><saan class="name">{{post.name}}</saan></li>
+            <li><span class="name">{{post.name}}</span></li>
             <li><span class="location">{{post.location}}</span></li><br>
             <li><span class="stars">{{post.stars}}</span></li>
             <li>
