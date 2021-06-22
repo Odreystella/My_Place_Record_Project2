@@ -43,12 +43,17 @@
         {{ message }}
     {% endfor %}
 {% endif %}
+
+{% include 'user/partials/social_login_panel.html' %}
+
 <div class="panel panel-default registration">
     <div class="panel-heading">로그인하기</div>
     <div class="panel-body">
         <form action="." method="POST">
         <!-- <form action="/user/login?next=/" method="POST"> 로그인 되면 '/'로 redirect-->
             {% csrf_token %}
+            {% include 'user/partials/form_field.html' with form=form %}
+            
             {% for field in form %}
             {{field.errors}}   <!--필드 상단에 오류 메시지 출력-->
             <div class="form-group">
