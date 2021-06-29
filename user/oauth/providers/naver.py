@@ -42,11 +42,11 @@ class NaverClient():
 
 
 class NaverLoginMixin:
-    naver_client = NaverClient()    # 네이버의 api 구현, 네이버의 인증토큰 발급과 프로필 정보 가져옴
+    naver_client = NaverClient()    # 네이버의 api 구현, 네이버의 접근 토큰 발급과 프로필 정보 가져옴
 
     def login_with_naver(self, state, code):
     
-        # 인증토큰 발급
+        # 접근 토큰 발급
         # login_with_naver 메소드는 naver_client로부터 token_infos 객체를 전달받음
         is_success, token_infos = self.naver_client.get_access_token(state, code)
 
@@ -55,10 +55,10 @@ class NaverLoginMixin:
 
         # token_infos는 아래와 같은 키를 갖는 딕셔너리 객체임
         # error - 에러코드, error_description - 에러메시지도 있음, 인증토큰을 받아오는데 실패한다면 에러메시지와 함께 함수 종료
-        access_token = token_infos.get('access_token')    # 인증토큰
-        refresh_token = token_infos.get('refresh_token')  # 인증토큰 재발급 토큰
-        expires_in = token_infos.get('expires_in')        # 인증토큰 만료기한(초)
-        token_type = token_infos.get('token_type')        # 인증토큰 사용하는 api 호출시 인증방식(Authorization 헤더 타입)
+        access_token = token_infos.get('access_token')    # 접근 토큰
+        refresh_token = token_infos.get('refresh_token')  # 접근 토큰 재발급 토큰
+        expires_in = token_infos.get('expires_in')        # 접근 토큰 만료기한(초)
+        token_type = token_infos.get('token_type')        # 접근 토큰 사용하는 api 호출시 인증방식(Authorization 헤더 타입)
 
         # 회원가입 진행을 위해 네이버 프로필 얻기 
         is_success, profiles = self.get_naver_profile(access_token, token_type)
@@ -77,7 +77,7 @@ class NaverLoginMixin:
         # 기본 인증모듈인 django.contrib.auth.backends.ModelBackend는 username(email)과 비밀번호를 이용해 인증처리, 소셜로그인은 비밀번호를 받을 수 없어서 따로 구현해야 함
         login(self.request, user, 'user.oauth.backends.NaverBackend')  # NaverBackend를 통한 인증 시도
 
-        # 소셜로그인의 마지막은 매번 재로그인을 할 수 없으니 세션정보에 인증토큰 정보를 추가하는 것
+        # 소셜로그인의 마지막은 매번 재로그인을 할 수 없으니 세션정보에 접근 토큰 정보를 추가하는 것
         self.set_session(access_token=access_token, refresh_token=refresh_token, expires_in=expires_in, token_type=token_type)
         return True, user
 
