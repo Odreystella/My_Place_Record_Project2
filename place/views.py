@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views import generic, View
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from config import settings
 
 from place.models import Category, Place
 from place.services import PlaceService
@@ -24,7 +26,8 @@ class CategoryListView(generic.ListView):
 
 
 # 카테고리 pk로 관련 글의 리스트를 보여주는 뷰
-class CategoryDetailView(generic.DetailView):
+class CategoryDetailView(LoginRequiredMixin, generic.DetailView):
+    login_url = settings.LOGIN_URL
     model = Category
     context_object_name = 'category'
     template_name = 'place_list.html'

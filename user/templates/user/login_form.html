@@ -1,39 +1,21 @@
 {% extends 'base.html' %}
+{% load static % }
 
 {% block title %}
 <title>로그인</title>
 {% endblock title %}
 
 {% block css %}
+{{ block.super }} <!--부모템플릿으로 부터 내용을 얻고 싶을 때-->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <style>
-    .registration {
-        width: 500px;
-        margin: 0 auto;
-        position: relative;
-    }
-    label {
-        width: 50%;
-        text-align: left;
-    }
-    input {
-        text-align: center;
-    }
-    .selfie {
-        position: absolute;
-        top: 140px;
-        left: 253px;
-        right: 0;
-    }
-    .form-actions {
-        text-align: center;
-        position: relative;
-        margin-left: -40px;
-    }
-    .btn {
-        width: 84%;
-    }
-
+    .registration { width: 500px; margin: 0 auto; position: relative; }
+    label { width: 50%; text-align: left; }
+    input { text-align: center; }
+    .selfie { position: absolute; top: 140px; left: 253px; right: 0; }
+    .form-actions { text-align: center; position: relative; margin-left: -20px; }
+    .btn { width: 90%; }
+    .panel { width: 430px;}
 </style>
 {% endblock css %}
 
@@ -43,12 +25,17 @@
         {{ message }}
     {% endfor %}
 {% endif %}
+
+{% include 'user/partials/social_login_panel.html' %}
+
 <div class="panel panel-default registration">
     <div class="panel-heading">로그인하기</div>
     <div class="panel-body">
         <form action="." method="POST">
         <!-- <form action="/user/login?next=/" method="POST"> 로그인 되면 '/'로 redirect-->
             {% csrf_token %}
+            {# % include 'user/partials/form_field.html' with form=form % #}
+            
             {% for field in form %}
             {{field.errors}}   <!--필드 상단에 오류 메시지 출력-->
             <div class="form-group">
@@ -64,3 +51,4 @@
     </div>
 </div>
 {% endblock content %}
+

@@ -6,13 +6,15 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.tokens import default_token_generator
-from django.views.generic import CreateView, TemplateView, FormView
-from django.views import View
+from django.views.generic import CreateView, TemplateView, FormView, View
+# from django.views import View
+from django.middleware.csrf import _compare_masked_tokens
 
-from config import settings
+from django.conf import settings
 from user.forms import UserSignupForm, UserLoginForm, VerificationEmailForm
 from user.services import UserVerificationService, UserService
 from user.mixins import VerifyEmailMixin
+from user.oauth.providers.naver import NaverLoginMixin
 
 # CreateView로 회원가입뷰 생성하기
 # TemplateView 와 다르게 model, fields 클래스 변수 추가
@@ -83,6 +85,7 @@ class UserVerificationView(TemplateView):
             messages.error(request, '인증이 실패하였습니다.')
         return HttpResponseRedirect(self.redirect_url)   # 인증 성공 여부와 상관없이 무조건 로그인 페이지로 redirect
 
+
 # LoginView로 로그인뷰 생성하기
 class UserLoginView(LoginView):
     authentication_form = UserLoginForm  # form_class = LoginForm보다 나은 방법, LoginForm 내부적으로 authentication_form 다음으로 form_class 확인
@@ -103,3 +106,36 @@ class MypageView(View):
 
     def post(self, request, *args, **kwargs):
         pass
+
+
+# 소셜 로그인뷰, 화면 없고, 서버단에서 네이버 인증토큰을 받고 인증처리하는 기능
+class SocialLoginCallBackView(NaverLoginMixin, View):
+    success_url = settings.LOGIN_REDIRECT_URL     # index.html로
+    failure_url = settings.LOGIN_URL              # login.html로
+    required_profiles = ['email', 'name']
+    
+    model = get_user_model()
+
+    def get(self, request, *args, **kwargs):
+        provider = kwargs.get('provider')   # url 라우터로부터 프로바이더 이름을 인자로 받음
+        success_url = request.GET.get('next', self.success_url)  # 로그인 하지 않은 상태에서 글 쓰려고 하면 로그인 페이지로 인동하고, next=쿼리가 추가되는데, 소셜로그인 하더라도 게시글 작성 화면으로 이동하게함
+
+        if provider == 'naver':
+            csrf_token = request.GET.get('state') 
+            # print('token:', csrf_token)
+            code = request.GET.get('code')
+            if not _compare_masked_tokens(csrf_token, request.COOKIES.get('csrftoken')): # url의 query 값의 state 값(naverLogin()에서 전달한)과 쿠키의 csrftoken을 비교함
+                messages.error(request, '잘못된 경로로 로그인하셨습니다.')
+                return HttpResponseRedirect(self.failure_url)
+
+            is_success, error = self.login_with_naver(csrf_token, code) # state 값이 정상적인 값이라면 로그인 시도
+            
+            if not is_success:   # 로그인 실패할 경우
+                messages.error(request, error)
+            return HttpResponseRedirect(self.success_url if is_success else self.failure_url)
+        
+        return HttpResponseRedirect(self.failure_url)
+
+    def set_session(self, **kwargs):
+        for key, value in kwargs.items():
+            self.request.session[key] = value
