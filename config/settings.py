@@ -136,6 +136,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # 미디어 파일을 관리할 루트 media 디렉토리
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -144,7 +145,7 @@ MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-LOGIN_URL = 'user/login'
+LOGIN_URL = '/user/login/'
 
 LOGIN_REDIRECT_URL = '/'  # 로그인 되면 '/'로 이동
 
@@ -162,3 +163,11 @@ EMAIL_USE_TLS = True
 # 네아로 소셜로그인
 NAVER_CLIENT_ID = get_secret("NAVER_CLIENT_ID")
 NAVER_SECRET_KEY = get_secret("NAVER_SECRET_KEY")
+
+# 사용자의 정보를 식별할 때 사용될 백엔드 리스트
+# 리스트의 순서대로 인증을 시도함, 그렇기 때문에 가장 많은 사용자가 이용하는 백엔드를 가장 위에 설정함 
+# 인증이 되면 해당 인증된 사용자 정보를 넘겨주고, 실패하면 리스트의 다음 백엔드에 위임, 모든 백엔드에서 인증에 실패할 경우 인증되지 않은 사용자로 처리
+AUTHENTICATION_BACKENDS = [
+    'user.oauth.backends.NaverBackend',        # 네이버 인증백엔드
+    'django.contrib.auth.backends.ModelBackend'
+]
