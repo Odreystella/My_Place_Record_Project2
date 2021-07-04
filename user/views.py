@@ -23,7 +23,8 @@ class UserSignupView(VerifyEmailMixin, CreateView):
     form_class = UserSignupForm                   # 커스텀한 SignupForm과 연결하기
     success_url = '/user/login/'                  # 가입 완료 후 redirect 해줄 url, index로 redirect
     verify_url = '/user/verify/'
-    
+    template_name_suffix = '_signupform'          # CreateView는 templates/user/모델명_form.html을 사용하는데 바꾸고 싶으면 template_name = 'signup.html' 하거나 suffix를 수정함
+
     # model = User                                # 자동생성 폼에서 사용할 모델, User 모델에 정의된 필드들 사용, model이 정의되면 Form 객체 자동 생성
     # form_class = UserCreationForm               # auth가 가지고 있는 폼 사용하기, username이 필수라 커스텀 필요
     # fields = ['email', 'name', 'password']      # 자동생성 폼에서 사용할 필드, 비밀번호 암호화가 안됨
