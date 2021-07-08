@@ -2,16 +2,18 @@ from django.forms.forms import Form
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import get_user_model
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.tokens import default_token_generator
 from django.views.generic import CreateView, TemplateView, FormView, View
 # from django.views import View
 from django.middleware.csrf import _compare_masked_tokens
+from . import forms
 
 from django.conf import settings
-from user.forms import UserSignupForm, UserLoginForm, VerificationEmailForm
+from user.forms import UserSignupForm, VerificationEmailForm
 from user.services import UserVerificationService, UserService
 from user.mixins import VerifyEmailMixin
 from user.oauth.providers.naver import NaverLoginMixin
@@ -88,13 +90,42 @@ class UserVerificationView(TemplateView):
 
 
 # LoginView로 로그인뷰 생성하기
-class UserLoginView(LoginView):
-    authentication_form = UserLoginForm  # form_class = LoginForm보다 나은 방법, LoginForm 내부적으로 authentication_form 다음으로 form_class 확인
-    template_name = 'user/login_form.html'
+# class UserLoginView(LoginView):
+#     class_form = UserLoginForm
+#     # authentication_form = UserLoginForm  # form_class = LoginForm보다 나은 방법, LoginForm 내부적으로 authentication_form 다음으로 form_class 확인
+#     template_name = 'user/login_form.html'
 
-    def form_invalid(self, form):
-        messages.error(self.request, '로그인에 실패하였습니다.' )
-        return super().form_invalid(form)
+#     def form_invalid(self, form):
+#         messages.error(self.request, '로그인에 실패하였습니다.' )
+#         return super().form_invalid(form)
+
+class UserLoginView(FormView):
+    template_name = 'user/login_form.html'
+    form_class = forms.LoginForm
+    success_url = ('/')
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get('email')
+        password = form.cleaned_data.get('password')
+        user = authenticate(self.request, username=email, password=password)
+        if user is not None:
+            auth_login(self.request, user)
+        return super().form_valid(form)
+
+# class UserLoginView(View): 
+#     def get(self, req): 
+#         form = forms.LoginForm 
+#         return render(req, 'user/login_form.html', {'form': form}) 
+#     def post(self, req): 
+#         form = forms.LoginForm(req.POST) 
+#         if form.is_valid(): 
+#             email = form.cleaned_data.get('email') 
+#             password = form.cleaned_data.get('password') 
+#             user = authenticate(req, username=email, password=password) 
+#             if user is not None: 
+#                 auth_login(req, user) 
+#                 return redirect('index') 
+#         return render(req, 'user/login_form.html', {'form': form})
 
 
 # 마이페이지 뷰 생성하기
