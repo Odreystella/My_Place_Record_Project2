@@ -14,7 +14,11 @@ class UserSignupForm(UserCreationForm):
         model = get_user_model()   # settings.py에서 AUTH_USER_MODEL이 가르키는 모델을 자동으로 찾아주는 함수
         fields = ['email', 'name', 'selfie'] # 정의된 모델에서 폼에 보여줄 필드를 정의함, password는 UserCreationForm에서 자동으로 생성해줌
 
-# 로그인 폼
+# 로그인 폼 - 기존거
+# class UserLoginForm(AuthenticationForm):
+#     username = EmailField(widget=forms.EmailInput(attrs={'autofocus':True})) # 로그인할 때 email 태그의 type이 text -> email
+
+
 # class UserLoginForm(UserCreationForm):
 #     username = EmailField(widget=forms.EmailInput(attrs={'autofocus':True})) # 로그인할 때 email 태그의 type이 text -> email
 
@@ -37,7 +41,6 @@ class LoginForm(forms.Form):
                 self.add_error( 'password', forms.ValidationError('Password wrong')) 
         except models.User.DoesNotExist: 
             self.add_error('email', forms.ValidationError("User not exist"))
-
 
 
 # 인증 이메일 재발송 폼

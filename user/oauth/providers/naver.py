@@ -67,9 +67,9 @@ class NaverLoginMixin:
 
         # 사용자 생성 또는 업데이트
         user, created = self.model.objects.get_or_create(email=profiles.get('email'))
-        if created:      # 유저 생성했다면 랜덤한 비밀번호로 설정, 소셜로그인은 로컬 비밀번호 필요 없음
+        if created:      # created = True, 유저 생성했다면 랜덤한 비밀번호로 설정, 소셜로그인은 로컬 비밀번호 필요 없음
             user.set_password(None)
-        user.name = profiles.get('name')   # 기존 회원이라면 user에 get한 user 담김
+        user.name = profiles.get('name')   # created = False, 기존 회원이라면 user에 get한 user 담김
         user.is_active = True
         user.save()
 
