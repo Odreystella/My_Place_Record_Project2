@@ -175,3 +175,5 @@ class SocialLoginCallBackView(NaverLoginMixin, View):
     def set_session(self, **kwargs):
         for key, value in kwargs.items():
             self.request.session[key] = value
+
+# git stash 연습 -  branch feature/practice_git_stash 따서 텍스트 추가
