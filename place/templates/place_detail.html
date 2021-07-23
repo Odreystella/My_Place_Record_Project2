@@ -8,7 +8,7 @@
 {% block css %}
 <style>
     ul {padding: 0; list-style: none;}
-    .container {width: 400px; position: relative; justify-content: center;}
+    .container {width: 400px; position: relative; justify-content: center; margin: 50px 0;}
     .heading-detail {display: inline-block;}
     .name {font-size: 2rem; text-align: center; font-weight: 700;}
     .btn {position: relative; right: -70px;}
@@ -16,6 +16,50 @@
     .font {font-weight: 600;}
     .stars::after { content: ''; border: 0.1px solid grey; display: block;}
     .memo::before { content: ''; border: 0.1px solid grey; display: block; margin-bottom: 10px;}
+    .detail-comment-input{
+        padding: 12px 10px;
+        border: none;
+        border: 1px solid rgb(197, 194, 194);
+        border-radius: 5px;
+        width: 80%;
+    }
+    .detail-comment-submit{
+        padding: 10px 10px;
+        border-radius: 5px;
+        border: none;
+        color: #fff;
+        background-color:rgb(248, 161, 104);
+        cursor: pointer; 
+    }
+    .detail-comment-list{
+        position: relative;
+        padding: 10px;
+        border-bottom: 1px solid rgb(230, 225, 225);
+    }
+    .comment-user-infor{
+        display: flex;
+        justify-content: space-between;
+    }
+    .user-nickname{
+        font-size: 1rem;
+        font-weight: bold;
+        }
+    .user-date{
+        font-size: .8rem;
+        }
+    .fa-ellipsis-v{
+        cursor: pointer;
+        margin-right: 10px;
+        font-size: .9rem;
+        }
+    .comment-edit-div{
+        position: relative;
+        top: -20px;
+    }
+    .comment-content > p{
+        font-size: 1rem;
+        margin: 5px;
+    }
 </style>
 <!-- <link rel="stylesheet" href="{% static 'index.css' %}"> -->
 {% endblock css %}
@@ -61,5 +105,98 @@
             </li>
         </ul>
     </div>
+    <div class="detail-comment">
+        <form id="comment-form" action="#" method='POST'>
+          {% csrf_token %}
+          <input type="text" class="detail-comment-input" placeholder="댓글을 입력해주세요." name="comment">
+          <button class="detail-comment-submit">등록</button>
+        </form>
+      </div>
+      <ul class="detail-comments-ul">
+        {% for comment in comments %}
+        <li class="detail-comment-list">
+            <div class="comment-user-infor">
+              <div class="comment-user">
+                <span class="user-nickname">{{comment.commenter.name}}</span>
+                <span class="user-date"> {{comment.created_string}}</span>
+              </div>
+              <div><i class=" ellipsis fas fa-ellipsis-v"></i>
+                <div class="comment-edit-div non-clicked">
+                  <button class="comment-edit">수정하기</button>
+                  <button class="comment-delete">삭제하기</button>
+                </div>
+              </div>
+            </div>
+            <div class="comment-content">
+              <p>{{comment.content}}</p>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
 </div>
 {% endblock content %}
+
+{% block javascript %}
+<script>
+    function createComment(content) {
+      console.log("Posting Comment");
+      let csrfValue = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+      let param = {
+        'post_pk' : '{{post.pk}}',
+        'content' : content,
+      }
+      fetch( "{% url 'social:comment' %}", {
+        method : "POST",
+        headers : {
+          "X-CSRFToken" : csrfValue,
+          "X-Requested-With" : "XMLHttpRequest"
+        },
+        body : JSON.stringify(param)
+      }).then(function(response) {
+        console.log('response:',response)
+        return response.json();
+      }).then(function(data) {
+        commentForm.reset();
+        console.log('data:', data)
+        let content = data["content"];
+        let created_at = data["created_string"];
+        let commentsList = document.querySelector(".detail-comments-ul");
+        commentsList.innerHTML += `
+        <li class="detail-comment-list">
+            <div class="comment-user-infor">
+              <div class="comment-user">
+                <span class="user-nickname">{{user.name}}</span>
+                <span class="user-date"> ${created_at}</span>
+              </div>
+              <div><i class=" ellipsis fas fa-ellipsis-v"></i>
+                <div class="comment-edit-div non-clicked">
+                  <button class="comment-edit">수정하기</button>
+                  <button class="comment-delete">삭제하기</button>
+                </div>
+              </div>
+            </div>
+            <div class="comment-content">
+              <p>${content}</p>
+            </div>
+          </li>
+        `;
+      }).catch((error) => {
+        console.error("Error", error);
+      })
+    }
+
+    function submitComment(e) {
+        e.preventDefault();
+        let content = document.querySelector(".detail-comment-input").value;
+        if (content) {
+            createComment(content);
+        }else {
+            console.log("You cannot submit an empty form")
+        }
+    }
+
+    let commentForm = document.getElementById("comment-form");
+    commentForm.addEventListener("submit", submitComment);
+
+</script>
+{% endblock javascript %}
