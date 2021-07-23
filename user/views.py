@@ -13,10 +13,10 @@ from django.middleware.csrf import _compare_masked_tokens
 from . import forms
 
 from django.conf import settings
-from user.forms import UserSignupForm, VerificationEmailForm
-from user.services import UserVerificationService, UserService
-from user.mixins import VerifyEmailMixin
-from user.oauth.providers.naver import NaverLoginMixin
+from user.forms import UserSignupForm, VerificationEmailForm, LoginForm
+from .services import UserVerificationService, UserService
+from .mixins import VerifyEmailMixin
+from .oauth.providers.naver import NaverLoginMixin
 
 # CreateView로 회원가입뷰 생성하기
 # TemplateView 와 다르게 model, fields 클래스 변수 추가
@@ -34,10 +34,10 @@ class UserSignupView(VerifyEmailMixin, CreateView):
     # template_name = 'user_form.html'
 
     def form_valid(self, form):   # 폼객체의 필드값들이 유효성 검증을 통과할 경우 호출됨, 각 필드의 값을 데이터베이스에 저장하고, 저장된 데이터를 폼객체의 instance 변수에 저장
-        response = super().form_valid(form)
+        response = super().form_valid(form)  # form.save() .. ?
         if form.instance:  # user 객체가 있다면
-            self.send_verification_email(form.instance)
-        return response
+            self.send_verification_email(form.instance)  # 인증메일 발송
+        return response           # success_url로 redirect
 
     #### 회원가입 하며 인증메일 보내기 ####
     # 1. 회원가입 폼 작성 후, 가입버튼 누르면 폼객체의 필드값들의 유효성을 검증하는 로직을 거침
@@ -87,7 +87,11 @@ class UserVerificationView(TemplateView):
         else:
             messages.error(request, '인증이 실패하였습니다.')
         return HttpResponseRedirect(self.redirect_url)   # 인증 성공 여부와 상관없이 무조건 로그인 페이지로 redirect
-
+    
+    # dto 만들어서 service에 던지기
+    # @staticmethod
+    # def _build_verify_dto():
+    #     pass
 
 # LoginView로 로그인뷰 생성하기
 # class UserLoginView(LoginView):
@@ -101,7 +105,7 @@ class UserVerificationView(TemplateView):
 
 class UserLoginView(FormView):
     template_name = 'user/login_form.html'
-    form_class = forms.LoginForm
+    form_class = LoginForm
     success_url = ('/')
 
     def form_valid(self, form):
@@ -110,7 +114,7 @@ class UserLoginView(FormView):
         user = authenticate(self.request, username=email, password=password)
         if user is not None:
             auth_login(self.request, user)
-        return super().form_valid(form)
+        return super().form_valid(form)    # success_url로 redirect
 
 # class UserLoginView(View): 
 #     def get(self, req): 
@@ -171,3 +175,5 @@ class SocialLoginCallBackView(NaverLoginMixin, View):
     def set_session(self, **kwargs):
         for key, value in kwargs.items():
             self.request.session[key] = value
+
+# git stash 연습 -  branch feature/practice_git_stash 따서 텍스트 추가

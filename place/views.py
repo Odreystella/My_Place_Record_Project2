@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views import generic, View
+from django.http import JsonResponse
+from django.core import serializers
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from config import settings
@@ -8,6 +10,10 @@ from config import settings
 from place.models import Category, Place
 from place.services import PlaceService
 from place.dto import CreateDto, UpdateDto
+
+from social.models import Comment
+from social.dto import CommentCreateDto
+from social.services import CommentService
 
 
 # class IndexView(TemplateView):
@@ -37,12 +43,28 @@ class CategoryDetailView(LoginRequiredMixin, generic.DetailView):
         context['posts'] = PlaceService.find_by_post(self.kwargs['pk'])
         return context
 
+    
 
 # 포스트 pk로 해당 포스트 상세내용 보여주는 뷰
-class PostDetailView(generic.DetailView):
-    model = Place
-    context_object_name = 'post'
-    template_name = 'place_detail.html'
+# class PostDetailView(generic.DetailView):
+#     model = Place
+#     context_object_name = 'post'
+#     template_name = 'place_detail.html'
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['comments'] = CommentService.find_comments(self.kwargs['pk'])
+#         return context
+
+
+# 포스트 pk로 해당 포스트 상세내용 보여주는 뷰
+class PostDetailView(View):
+    def get(self, request, *args, **kwargs):
+        post_pk = self.kwargs['pk']
+        post = Place.objects.filter(pk=post_pk).first()
+        comments = Comment.objects.filter(place__pk=post_pk)
+        context = {'post' : post, 'comments' : comments}
+        return render(request, 'place_detail.html', context)
 
 
 # 카테고리 pk로 해당 카테고리에 글 생성하는 뷰
