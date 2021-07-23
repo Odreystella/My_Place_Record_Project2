@@ -34,13 +34,6 @@ class Photo(models.Model):
     place = models.ForeignKey(Place, on_delete=models.SET_NULL, null=True, blank=True, related_name='photo')
     image = models.ImageField(upload_to='images/', default='default.png', blank=True, null=True)
 
-class Comment(BaseField):
-    place = models.ForeignKey(Place, on_delete=models.CASCADE, related_name='comment')
-    commenter = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='comment')
-    content = models.TextField()
-
-    def __str__(self):
-        return self.content
 
 
 
