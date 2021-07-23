@@ -158,6 +158,7 @@
       }).then(function(data) {
         commentForm.reset();
         console.log('data:', data)
+        let writer = data["writer"];
         let content = data["content"];
         let created_at = data["created_string"];
         let commentsList = document.querySelector(".detail-comments-ul");
@@ -165,7 +166,7 @@
         <li class="detail-comment-list">
             <div class="comment-user-infor">
               <div class="comment-user">
-                <span class="user-nickname">{{user.name}}</span>
+                <span class="user-nickname">${writer}</span>
                 <span class="user-date"> ${created_at}</span>
               </div>
               <div><i class=" ellipsis fas fa-ellipsis-v"></i>

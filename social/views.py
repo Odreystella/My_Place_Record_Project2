@@ -30,6 +30,7 @@ class CommentCreateView(View):
             print("여기 통과 = DB에 댓글 인스턴스 생성")
 
             context = {
+                'writer' : comment.commenter.name,
                 'content' : comment.content,
                 'created_string' : comment.created_string,
             }
